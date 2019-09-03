@@ -75,13 +75,6 @@ $paypal_payment_currency = get_option('paypal_payment_currencye');
             <input name="payment_subject" type="text" size="35" value="<?php echo get_option('paypal_payment_subject'); ?>"/>
             <br /><i>Enter the Product or service name or the reason for the payment here. The visitors will see this text</i><br />
         </td></tr>
-        <tr valign="top"><td width="25%" align="left">
-            <strong>Payment Option 1:</strong>
-            </td><td align="left">
-            <input name="payment_option1" type="text" size="25" value="<?php echo get_option('paypal_payment_option1'); ?>"/>
-                <strong>Price :</strong>
-            <input name="payment_value1" type="number" min="1" value="<?php echo esc_attr(get_option('paypal_payment_value1')); ?>"/>
-        <br /></td></tr>
         <tr valign="top">
             <td width="25%" align="left">
             <strong>Return URL from PayPal:</strong>
