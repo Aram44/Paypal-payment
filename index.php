@@ -74,7 +74,7 @@ class Paypal_Widget extends WP_Widget {
 
     /* === Paypal form === */
     $output = '';
-    $output .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" class="wp_accept_pp_button_form_classic">';
+    $output .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" class="wp_paypal_pay">';
     $output .= '<input type="hidden" name="cmd" value="_xclick" />';
     $output .= '<input type="hidden" name="business" value="'.esc_attr($paypal_payment_email).'" />';
     $output .= '<input type="hidden" name="item_name" value="'.esc_attr($paypal_payment_subject).'" />';
@@ -128,7 +128,7 @@ class Paypal_Widget extends WP_Widget {
     $output .= <<<EOT
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-    $('#paybutton').live('click', function () {{
+    $('.wp_paypal_pay').submit(function(e){
         var form_obj = $(this);
         var other_amt = form_obj.find('input[name=other_amount]').val();
         if (!isNaN(other_amt) && other_amt.length > 0){
