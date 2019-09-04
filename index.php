@@ -125,14 +125,14 @@ class Paypal_Widget extends WP_Widget {
     }
     
     $output .= '<div>';
-    $output .= '<br><input type="image" src="'.plugins_url().'/Paypal-payment/img/'.$paypal_button.'.gif" name="submit" alt="Pay!" style="width: 130px;">';
+    $output .= '<br><input type="image" src="'.plugins_url().'/Paypal-payment/img/'.$paypal_button.'.gif" name="submit" alt="Pay!" style="width: 130px;" id="paybutton">';
     $output .= '</div>';
     
     $output .= '</form>';
     $output .= <<<EOT
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-    $('.wp_accept_pp_button_form_classic').submit(function(e){
+    $('#paybutton').live('click', function () {{
         var form_obj = $(this);
         var other_amt = form_obj.find('input[name=other_amount]').val();
         if (!isNaN(other_amt) && other_amt.length > 0){
