@@ -10,23 +10,18 @@
 
 defined('ABSPATH') or die('Error: file not found');
 
-class payment
-{
-	function __construct(){
-		add_action('admin_menu', array($this, 'add_admin_pages' ) );
-		
-	}
-	public function add_admin_pages(){
-		add_menu_page('Paypal payment', 'Paypal', 'manage_options', 'paypal_payment', array($this, 'add_paypal_page'), 'dashicons-screenoptions', 75);
-		add_submenu_page( 'paypal_payment', 'Paypal payment', 'Widget', true, 'paypal_widget', array($this, 'add_widget_page') );
-	}
-	public function add_paypal_page(){
+    function add_paypal_page(){
 		require_once plugin_dir_path(__FILE__) . 'admin.php';
 	}
-	public function add_widget_page(){
+	function add_widget_page(){
 		require_once plugin_dir_path(__FILE__) . 'widgetoptions.php';
 	}
-	function activate(){
+    function add_admin_pages(){
+		add_menu_page('Paypal payment', 'Paypal', 'manage_options', 'paypal_payment', 'add_paypal_page', 'dashicons-screenoptions', 75);
+		add_submenu_page( 'paypal_payment', 'Paypal payment', 'Widget', true, 'paypal_widget',  'add_widget_page' );
+	}
+    add_action('admin_menu', 'add_admin_pages' );
+function pay_pal_activate(){
 		add_option('paypal_payment_address', get_bloginfo('admin_email'));
 		add_option('paypal_payment_currencye', 'USD');
 		add_option('paypal_payment_subject', 'Plugin Service Payment');
@@ -50,10 +45,7 @@ class payment
 		add_option('paypal_widget_referancetitle', get_bloginfo('admin_email'));
 		add_option('paypal_widget_img', 'pay1');
 	}
-}
-if (class_exists('payment')) {
-	$paypal = new payment();
-}
+
 class Paypal_Widget extends WP_Widget {
 	function Paypal_Widget () {
 		parent::__construct( false, 'PayPal Widget' );
@@ -160,4 +152,4 @@ function register_Paypal_Widget() {
 }
 
 add_action( 'widgets_init', 'register_Paypal_Widget' );
-register_activation_hook(__FILE__, array($paypal, 'activate') );
+register_activation_hook(__FILE__, 'pay_pal_activate' );
