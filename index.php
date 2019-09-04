@@ -8,10 +8,6 @@
  * @package paypal
  */
 
-function my_func_remove_menu(){
- remove_submenu_page( 'index.php', 'update-core.php' );
-}
-add_action( 'admin_menu', 'my_func_remove_menu' );
 defined('ABSPATH') or die('Error: file not found');
 
 class payment
