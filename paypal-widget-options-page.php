@@ -21,7 +21,7 @@ if (isset($_POST['widget_update'])) {
         $pprtbt = $_POST['paypal_referancetitle'];
         update_option('paypal_widget_referancetitle', $pprtbt);
     }
-	$ppwi = $_POST['payment_button_type'];
+	$ppwi = $_POST['paypal_payment_button_type'];
 	update_option('paypal_widget_titlename', $ppwt);
 	update_option('paypal_widget_img', $ppwi);
 
@@ -37,21 +37,21 @@ if (isset($_POST['widget_update'])) {
             </td><td align="left">
             <input type="checkbox" name="showoption" value="showoption" 
             <?php
-            if (get_option('paypal_payment_showoption')=='true'){echo "checked";} ?> />
+            if (get_option('paypal_payment_showoption')==='true'){echo "checked";} ?> />
         </td></tr>
         <tr><td width="25%" align="left"  style="padding-top: 0px; padding-bottom: 0px; margin-bottom: 0px; margin-top: 0px;">
             <h3>Show Other Amount:</h3>
             </td><td align="left">
             <input type="checkbox" name="ppother" value="otheramount" 
             <?php
-            if (get_option('paypal_payment_otheramount')=='true'){echo "checked";} ?> />
+            if (get_option('paypal_payment_otheramount')==='true'){echo "checked";} ?> />
         </td></tr>
         <tr><td width="25%" align="left"  style="padding-top: 0px; padding-bottom: 0px; margin-bottom: 0px; margin-top: 0px;">
             <h3>Show Reference Text Box:</h3>
             </td><td align="left">
             <input type="checkbox" name="pprbox" value="referencebox" 
             <?php
-            if (get_option('paypal_payment_referencebox')=='true'){echo "checked";} ?> />
+            if (get_option('paypal_payment_referencebox')==='true'){echo "checked";} ?> />
         </td></tr>
         <tr><td width="20%" align="left"  style="padding-top: 0px;">
         	<h3>Widget Title:</h3>
@@ -61,7 +61,7 @@ if (isset($_POST['widget_update'])) {
             ?>/>
         </td></tr>
         <?php 
-            if (get_option('paypal_payment_referencebox')=='true'){
+            if (get_option('paypal_payment_referencebox')==='true'){
                 echo '<tr><td width="20%" align="left"  style="padding-top: 0px;">
             <h3>Reference Text Box Title:</h3>
             </td><td align="left">
@@ -73,25 +73,28 @@ if (isset($_POST['widget_update'])) {
     </table>
 <h3 style="margin-left: 10px; font-size: 20px;">Button style</h3>
 <table style="width:100%; border-spacing:0; padding:0; text-align:center;">
+    <?php
+    $paypal_widget_button_img = get_option('paypal_widget_img') ;
+    $paypal_widget_button = substr($paypal_widget_button_img, -8, 4); ?>
     <tr>
         <td>
-    <input type="radio" name="payment_button_type" value="pay1" <?php ;if (get_option('paypal_widget_img')=='pay1'){echo "checked";} ?> />
+    <input type="radio" name="paypal_payment_button_type" value="<?php echo plugins_url('/Paypal-payment/img/pay1.gif');?>" <?php ;if ($paypal_widget_button==='pay1'){echo "checked";} ?> />
         </td>
         <td>
-    <input type="radio" name="payment_button_type" value="pay2" <?php ;if (get_option('paypal_widget_img')=='pay2'){echo "checked";} ?> />
+    <input type="radio" name="paypal_payment_button_type" value="<?php echo plugins_url('/Paypal-payment/img/pay2.gif');?>" <?php ;if ($paypal_widget_button==='pay2'){echo "checked";} ?> />
         </td>
         <td>
-    <input type="radio" name="payment_button_type" value="pay3" <?php ;if (get_option('paypal_widget_img')=='pay3'){echo "checked";} ?> />
+    <input type="radio" name="paypal_payment_button_type" value="<?php echo plugins_url('/Paypal-payment/img/pay3.gif');?>" <?php ;if ($paypal_widget_button==='pay3'){echo "checked";} ?> />
         </td>
         <td>
-    <input type="radio" name="payment_button_type" value="pay4" <?php ;if (get_option('paypal_widget_img')=='pay4'){echo "checked";} ?> />
+    <input type="radio" name="paypal_payment_button_type" value="<?php echo plugins_url('/Paypal-payment/img/pay4.gif');?>" <?php ;if ($paypal_widget_button==='pay4'){echo "checked";} ?> />
         </td>
     </tr>
     <tr>
-        <td><img src="<?php echo plugins_url();?>/Paypal-payment/img/pay1.gif" width="150" height="58" alt="" /></td>
-        <td><img src="<?php echo plugins_url();?>/Paypal-payment/img/pay2.gif" width="150" height="58" alt="" /></td>
-        <td><img src="<?php echo plugins_url();?>/Paypal-payment/img/pay3.gif" width="150" height="40" alt="" /></td>
-        <td><img src="<?php echo plugins_url();?>/Paypal-payment/img/pay4.gif" width="150" height="40" alt="" /></td>
+        <td><img src="<?php echo plugins_url('/Paypal-payment/img/pay1.gif');?>" width="150" height="40" alt="" /></td>
+        <td><img src="<?php echo plugins_url('/Paypal-payment/img/pay2.gif');?>" width="150" height="40" alt="" /></td>
+        <td><img src="<?php echo plugins_url('/Paypal-payment/img/pay3.gif');?>" width="150" height="58" alt="" /></td>
+        <td><img src="<?php echo plugins_url('/Paypal-payment/img/pay4.gif');?>" width="150" height="58" alt="" /></td>
     </tr>
 </table>
 <div class="submit" style="margin-left: 10px;">

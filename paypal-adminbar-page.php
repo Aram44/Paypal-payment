@@ -59,13 +59,13 @@ $paypal_payment_currency = get_option('paypal_payment_currencye');
             <strong>Choose Payment Currency: </strong>
             </td><td align="left">
         <select id="paypal_payment_currency" name="payment_currency">
-    <?php _e('<option value="USD"') ?><?php if ($paypal_payment_currency == "USD") echo " selected " ?><?php _e('>US Dollar</option>') ?>
-    <?php _e('<option value="GBP"') ?><?php if ($paypal_payment_currency == "GBP") echo " selected " ?><?php _e('>Pound Sterling</option>') ?>
-    <?php _e('<option value="EUR"') ?><?php if ($paypal_payment_currency == "EUR") echo " selected " ?><?php _e('>Euro</option>') ?>
-    <?php _e('<option value="AUD"') ?><?php if ($paypal_payment_currency == "AUD") echo " selected " ?><?php _e('>Australian Dollar</option>') ?>
-    <?php _e('<option value="CAD"') ?><?php if ($paypal_payment_currency == "CAD") echo " selected " ?><?php _e('>Canadian Dollar</option>') ?>
-    <?php _e('<option value="NZD"') ?><?php if ($paypal_payment_currency == "NZD") echo " selected " ?><?php _e('>New Zealand Dollar</option>') ?>
-    <?php _e('<option value="HKD"') ?><?php if ($paypal_payment_currency == "HKD") echo " selected " ?><?php _e('>Hong Kong Dollar</option>') ?>
+    <?php _e('<option value="USD"') ?><?php if ($paypal_payment_currency === "USD") echo " selected " ?><?php _e('>US Dollar</option>') ?>
+    <?php _e('<option value="GBP"') ?><?php if ($paypal_payment_currency === "GBP") echo " selected " ?><?php _e('>Pound Sterling</option>') ?>
+    <?php _e('<option value="EUR"') ?><?php if ($paypal_payment_currency === "EUR") echo " selected " ?><?php _e('>Euro</option>') ?>
+    <?php _e('<option value="AUD"') ?><?php if ($paypal_payment_currency === "AUD") echo " selected " ?><?php _e('>Australian Dollar</option>') ?>
+    <?php _e('<option value="CAD"') ?><?php if ($paypal_payment_currency === "CAD") echo " selected " ?><?php _e('>Canadian Dollar</option>') ?>
+    <?php _e('<option value="NZD"') ?><?php if ($paypal_payment_currency === "NZD") echo " selected " ?><?php _e('>New Zealand Dollar</option>') ?>
+    <?php _e('<option value="HKD"') ?><?php if ($paypal_payment_currency === "HKD") echo " selected " ?><?php _e('>Hong Kong Dollar</option>') ?>
         </select>
             <br /><i>This is the currency for your visitors to make Payments or Donations in.</i><br />
             </td></tr>
