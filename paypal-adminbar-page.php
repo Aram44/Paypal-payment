@@ -1,38 +1,40 @@
 <h1>Paypal Payment options</h1>
 <?php
 if (isset($_POST['payment_update'])) {
-    $numofoptions = 1;
+    $numofoptions = 0;
 	update_option('paypal_payment_address', $_POST['paypal_payment_email']);
 	update_option('paypal_payment_currencye', $_POST['payment_currency']);
 	update_option('paypal_payment_subject', $_POST['payment_subject']);
-	update_option('paypal_payment_option1', $_POST['payment_option1']);
-	update_option('paypal_payment_value1', $_POST['payment_value1']);
-    if(strlen($_POST['payment_option2'])!=0) {
+    update_option('paypal_payment_option1', $_POST['paypal_payment_option1']);
+    update_option('paypal_payment_value1', $_POST['paypal_payment_value1']);
+    if(!empty($_POST['paypal_payment_option1'])) {
        $numofoptions++;
-       update_option('paypal_payment_option2', $_POST['payment_option2']);
-       update_option('paypal_payment_value2', $_POST['payment_value2']);
     }
-    if(strlen($_POST['payment_option3'])!=0) {
+    if(!empty($_POST['paypal_payment_option2'])) {
        $numofoptions++;
-    update_option('paypal_payment_option3', $_POST['payment_option3']);
-    update_option('paypal_payment_value3', $_POST['payment_value3']);
+       update_option('paypal_payment_option2', $_POST['paypal_payment_option2']);
+       update_option('paypal_payment_value2', $_POST['paypal_payment_value2']);
     }
-    if(strlen($_POST['payment_option4'])!=0) {
+    if(!empty($_POST['paypal_payment_option3'])) {
        $numofoptions++;
-    update_option('paypal_payment_option4', $_POST['payment_option4']);
-    update_option('paypal_payment_value4', $_POST['payment_value4']);
+    update_option('paypal_payment_option3', $_POST['paypal_payment_option3']);
+    update_option('paypal_payment_value3', $_POST['paypal_payment_value3']);
     }
-    if(strlen($_POST['payment_option5'])!=0) {
+    if(!empty($_POST['paypal_payment_option4'])) {
        $numofoptions++;
-    update_option('paypal_payment_option5', $_POST['payment_option5']);
-    update_option('paypal_payment_value5', $_POST['payment_value5']);
+    update_option('paypal_payment_option4', $_POST['paypal_payment_option4']);
+    update_option('paypal_payment_value4', $_POST['paypal_payment_value4']);
+    }
+    if(!empty($_POST['paypal_payment_option5'])) {
+       $numofoptions++;
+    update_option('paypal_payment_option5', $_POST['paypal_payment_option5']);
+    update_option('paypal_payment_value5', $_POST['paypal_payment_value5']);
     }
     update_option('paypal_payment_numoptions', $numofoptions);
 	update_option('paypal_payment_return_url', $_POST['paypal_return_url']);
 	update_option('paypal_payment_cancel_url', $_POST['paypal_cancel_url']);
 	echo '<div id="message" class="updated fade" style="margin-left: 0px;"><p><strong>Payment Options Updated!</strong></p></div>';
 }
-$wp_options = get_option('wp_pp_ref_title');
 $paypal_payment_currency = get_option('paypal_payment_currencye');
 ?>
 <div class=wrap>
@@ -96,7 +98,7 @@ $paypal_payment_currency = get_option('paypal_payment_currencye');
         $('.addoption_button').click(function(e){
             numofoption++;
         if (numofoption < 6){
-           $('#add_newoption').append("<tr valign='top'><td width='25%' align='left'><strong>Payment Option "+numofoption+":</strong></td><td align='left'><input name='payment_option"+numofoption+"' type='text' size='25' value=''/><strong> Price : </strong><input name='payment_value"+numofoption+"' type='number' min='1' value='' /><br /></td></tr>");
+           $('#add_newoption').append("<tr valign='top'><td width='25%' align='left'><strong>Payment Option "+numofoption+":</strong></td><td align='left'><input name='paypal_payment_option"+numofoption+"' type='text' size='25' value=''/><strong> Price : </strong><input name='paypal_payment_value"+numofoption+"' type='number' min='1' value='' /><br /></td></tr>");
     }
             });
         });
@@ -104,16 +106,16 @@ $paypal_payment_currency = get_option('paypal_payment_currencye');
         <tr valign="top"><td width="25%" align="left">
             <strong>Payment Option 1:</strong>
             </td><td align="left">
-            <input name="payment_option2" type="text" size="25" value="<?php echo get_option('paypal_payment_option1'); ?>"/>
+            <input name="paypal_payment_option1" type="text" size="25" value="<?php echo get_option('paypal_payment_option1'); ?>"/>
                 <strong>Price :</strong>
-            <input name="payment_value2" type="number" min="1" value="<?php echo get_option('paypal_payment_value1'); ?>"/>
+            <input name="paypal_payment_value1" type="number" min="1" value="<?php echo get_option('paypal_payment_value1'); ?>"/>
         <br /></td></tr>
         <?php
         $num_options = (int)get_option('paypal_payment_numoptions');
         for ($i=2; $i <= $num_options; $i++) {
             $payoption = get_option('paypal_payment_option'.$i);
             $payvalue = get_option('paypal_payment_value'.$i);
-            echo "<tr valign='top'><td width='25%' align='left'><strong>Payment Option ".$i.":</strong></td><td align='left'><input name='payment_option".$i."' type='text' size='25' value='".$payoption."'/><strong> Price : </strong><input name='payment_value".$i."' type='number' min='1' value='".$payvalue."'/><br /></td></tr>";
+            echo "<tr valign='top'><td width='25%' align='left'><strong>Payment Option ".$i.":</strong></td><td align='left'><input name='paypal_payment_option".$i."' type='text' size='25' value='".$payoption."'/><strong> Price : </strong><input name='paypal_payment_value".$i."' type='number' min='1' value='".$payvalue."'/><br /></td></tr>";
         }
         ?>
     </table>

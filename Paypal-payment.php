@@ -10,25 +10,36 @@
 
 defined( 'ABSPATH' ) || exit;
 
+//Add script file
+
 function add_paypal_plugin_scripts() {
     wp_enqueue_script('jquery');
-	wp_enqueue_script( 'widget-script', plugins_url( '\assets\paypal-plugin.js', __FILE__ ), array('jquery') );
+	wp_enqueue_script( 'widget-script', plugins_url( '\assets\paypal-plugin.js', __FILE__ ), array('jquery'), true );
 }
 
 add_action( 'wp_enqueue_scripts', 'add_paypal_plugin_scripts' );
 
+//Add payment optinos page on menu
+
 function add_paypal_page(){
 	require_once plugin_dir_path(__FILE__) . 'paypal-adminbar-page.php';
 }
+//Add widget options page on menu
+
 function add_paypal_widget_page(){
 	require_once plugin_dir_path(__FILE__) . 'paypal-widget-options-page.php';
 }
+
+//Create item for for menu
+
 function add_paypal_admin_pages(){
 	add_menu_page('Paypal payment', 'Paypal', 'manage_options', 'paypal_payment', 'add_paypal_page', 'dashicons-screenoptions', 75);
 	add_submenu_page( 'paypal_payment', 'Paypal payment', 'Widget', true, 'paypal_widget',  'add_paypal_widget_page' );
 }
 
 add_action('admin_menu', 'add_paypal_admin_pages' );
+
+//Plugin install add all options
 
 function pay_pal_plugin_install(){
 		add_option('paypal_payment_address', get_bloginfo('admin_email'));
@@ -47,22 +58,34 @@ function pay_pal_plugin_install(){
         add_option('paypal_payment_return_url', home_url());
         add_option('paypal_payment_cancel_url', home_url());
 		add_option('paypal_payment_showoption', 'true');
-		add_option('paypal_payment_numoptions', '1');
+		add_option('paypal_payment_numoptions', '3');
 		add_option('paypal_payment_otheramount', 'true');
 		add_option('paypal_payment_referencebox', 'true');
 		add_option('paypal_widget_titlename', 'PayPal Widget');
 		add_option('paypal_widget_referancetitle', get_bloginfo('admin_email'));
 		add_option('paypal_widget_img', plugins_url('/Paypal-payment/img/pay1.gif'));
 	}
+
+//Show error messages
+
 function paypal_show_error_message(){
     _e('<p>Error: Please re-activate this plugin</p>');
 }
 
-if (!class_exists('Paypal_Widget')) {
-class Paypal_Widget extends WP_Widget {
-	function Paypal_Widget () {
+
+if (!class_exists('Pay_pal_Widget')) {
+class Pay_pal_Widget extends WP_Widget {
+	function __construct() {
 		parent::__construct( false, 'PayPal Widget' );
 	}
+
+	/**
+	* Outputs the content of the widget
+	*
+	* @param $args
+	* @param $intence
+	*/
+
 	function widget( $args, $instance ) {
 
 	define('PP_BUTTON_IMG', get_option('paypal_widget_img'));
@@ -72,12 +95,6 @@ class Paypal_Widget extends WP_Widget {
     $paypal_payment_subject = get_option('paypal_payment_subject') || paypal_show_error_message();
     $paypal_plugin_showpotion = get_option('paypal_payment_showoption') || paypal_show_error_message();
 
-    $paypal_plugin_val1 = get_option('paypal_payment_value1');
-	$paypal_plugin_val2 = get_option('paypal_payment_value2');
-	$paypal_plugin_val3 = get_option('paypal_payment_value3');
-	$paypal_plugin_val4 = get_option('paypal_payment_value4');
-	$paypal_plugin_val5 = get_option('paypal_payment_value5');
-
     $paypal_print_widget = '';
     $paypal_print_widget .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" class="wp_paypal_pay">';
     $paypal_print_widget .= '<input type="hidden" name="cmd" value="_xclick" />';
@@ -86,31 +103,25 @@ class Paypal_Widget extends WP_Widget {
     $paypal_print_widget .= '<input type="hidden" name="currency_code" value="'.esc_attr($paypal_payment_currency).'" />';
     $paypal_print_widget .= '<div><h2 class="widget-title">'.get_option('paypal_widget_titlename').'</h2>';
 
-    if (empty($paypal_plugin_val1)===true and empty($paypal_plugin_val2)===true and empty($paypal_plugin_val3)===true and empty($paypal_plugin_val4)===true and empty($paypal_plugin_val5)===true) {
+    if (get_option('paypal_payment_numoptions')==0 ) {
 	    $paypal_plugin_showpotion = false;
 	}else{
 		$paypal_print_widget .= '<select id="amount" name="amount" style="width: 300px;">';
+		for ($i=1; $i <= get_option('paypal_payment_numoptions'); $i++) {
+			$numoption = "paypal_payment_option".$i;
+			$numvalue = "paypal_payment_value".$i;
+			$paypal_print_widget .= '<option value='.get_option($numvalue).'>'.get_option($numoption).' - '.get_option($numvalue).' '.get_option('paypal_payment_currencye').'</option>';
+		}
+			$paypal_print_widget .= '</select><br>';
 	}
-    if (!empty($paypal_plugin_val1)) {
-		$paypal_print_widget .= '<option value='.$paypal_plugin_val1.'>'.get_option('paypal_payment_option1').' '.get_option('paypal_payment_currencye').'</option>';}
-    if (!empty($paypal_plugin_val2)) {
-		$paypal_print_widget .= '<option value='.$paypal_plugin_val2.'>'.get_option('paypal_payment_option2').' '.get_option('paypal_payment_currencye').'</option>';}
-    if (!empty($paypal_plugin_val3)) {
-		$paypal_print_widget .= '<option value='.$paypal_plugin_val3.'>'.get_option('paypal_payment_option3').' '.get_option('paypal_payment_currencye').'</option>';}
-    if (!empty($paypal_plugin_val4)) {
-		$paypal_print_widget .= '<option value='.$paypal_plugin_val4.'>'.get_option('paypal_payment_option4').' '.get_option('paypal_payment_currencye').'</option>';}
-	if (!empty($paypal_plugin_val5)) {
-		$paypal_print_widget .= '<option value='.$paypal_plugin_val5.'>'.get_option('paypal_payment_option5').' '.get_option('paypal_payment_currencye').'</option>';}
-    if ($paypal_plugin_showpotion == true)
-		$paypal_print_widget .= '</select><br>';
-    if(get_option('paypal_payment_otheramount')=='true' or $paypal_plugin_showpotion == false){
+    if(get_option('paypal_payment_otheramount')=='true' || $paypal_plugin_showpotion == false){
 		$paypal_print_widget .= '<div"><strong>Other Amount:</strong></div>';
 		$paypal_print_widget .= '<div style="margin-top:10px;"><input type="number" min="1" step="any" name="other_amount" title="Other Amount" value="" style="max-width:80px;"></div>';
 	}
 	if (get_option('paypal_payment_referencebox')==='true') {
 		$paypal_print_widget .= '<strong>'.get_option('paypal_widget_referancetitle').'</strong>';
-		$paypal_print_widget .= '<input type="hidden" name="on0" value="'.apply_filters('wp_pp_button_reference_name','Reference').'"/>';
-		$paypal_print_widget .= '<div><input type="text" name="os0" maxlength="60" value="'.apply_filters('wp_pp_button_reference_value','').'"/></div>';
+		$paypal_print_widget .= '<input type="hidden" name="on0" value=""/>';
+		$paypal_print_widget .= '<div><input type="text" name="os0" maxlength="60" value=""/></div>';
 	}
 
     $paypal_print_widget .= '<input type="hidden" name="no_shipping" value="0" /><input type="hidden" name="no_note" value="1" /><input type="hidden" name="bn" value="TipsandTricks_SP" />';
@@ -132,16 +143,24 @@ class Paypal_Widget extends WP_Widget {
     $paypal_print_widget .= '</form>';
     echo $paypal_print_widget;
 	}
+	//Processing widget options on save
 	function update( $new_instance, $old_instance ) {
 		
 	}
+
+	/**
+	 * Outputs the options form on admin
+	 *
+	 * @param array $instance The widget options
+	 */
+
 	function form($instance) {
 		_e("Set the Plugin Settings from the Widget menu");
 	}
 }
 }
 function register_Paypal_Widget() {
-	register_widget( 'Paypal_Widget' );
+	register_widget( 'Pay_pal_Widget' );
 }
 
 add_action( 'widgets_init', 'register_Paypal_Widget' );
